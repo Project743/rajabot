@@ -1,1 +1,1 @@
-TOKEN = '1808129575:AAGMGJNeym-8aTJo-X9qHt82IK5oy584NMU'#bot token
+TOKEN = ''#bot token
