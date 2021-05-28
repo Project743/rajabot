@@ -10,7 +10,7 @@ def new_day():
 	current_hour = int(current_time.hour)
 	cyrrent_minute = int(current_time.minute)
 	
-	if current_hour == 9 and cyrrent_minute == 05:
+	if current_hour == 9 and cyrrent_minute == 5:
 		f = open('date.txt','r')
 		save_date = f.read()
 
