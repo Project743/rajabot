@@ -8,7 +8,7 @@ import uptime
 from sqlighter import SQLighter
 import keyboards as kb
 from datetime import datetime
-
+import question
 # задаем уровень логов
 logging.basicConfig(level=logging.INFO)
 
@@ -67,7 +67,7 @@ async def unsubscribe(message: types.Message):
 
 @dp.message_handler(commands=['start'])
 async def process_start_command(message: types.Message):
-    await message.answer("Добро пожаловать!\nЯ - Pinki, бот созданный чтобы быть подопытным кроликом \n спроси: /ivent? и я раскажу о сегодняшних ивентах в Dragon raja", reply_markup=kb.inline_kb1)
+    await message.answer("Добро пожаловать!\nЯ - Pirsia, бот созданный чтобы быть подопытным кроликом \nЯ раскажу о сегодняшних ивентах в Dragon raja\n bot-project.online", reply_markup=kb.inline_kb1)
 
 
 @dp.message_handler(commands=['ivent'])
@@ -78,16 +78,18 @@ async def process_ivent_command(message: types.Message):
 async def process_help_command(message: types.Message):
     await message.answer("Я могу ответить на следующие команды:/start, /ivent, /help, /subscribe, /unsubscribe")
 
+@dp.message_handler()
+async def echo_message(msg: types.Message):
+    await bot.send_message(msg.from_user.id, question.get_question(msg.text))
+
 async def scheduled(wait_for):
 	while True:
 		await asyncio.sleep(wait_for)
 
-		# проверяем 
 		
-		new_day = uptime.new_day()
-		
+		notification_msg = ivent.notification()
 
-		if new_day == 1:
+		if notification_msg != 0:
 			# получаем список подписчиков бота
 			subscriptions = db.get_subscriptions()
 
@@ -95,7 +97,7 @@ async def scheduled(wait_for):
 			for s in subscriptions:
 				await bot.send_message(
 					s[1],
-					ivent.iventmsg() ,
+					notification_msg ,
 					disable_notification = True
 				)
 		
