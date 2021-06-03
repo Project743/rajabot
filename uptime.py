@@ -1,31 +1,30 @@
-#парсер времени UTC
-
-import requests
-from bs4 import BeautifulSoup
+from datetime import datetime
 
 
-user_agent = ('Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.77 Safari/537.36')
 
-url = 'https://time.is/UTC'
 def time_UTC():
-	response = requests.get(url, headers={'User-Agent':user_agent})
-	soup = BeautifulSoup(response.text, 'lxml')
-	quotes = soup.find_all('div', id="clock0_bg")
-
-	for quote in quotes:
-		time = int(quote.text.replace(':',''))//100	
+	current_time = str(datetime.now().time()).replace(':','')
+	time = int(current_time[:current_time.find('.')])//100-300	
 	return time
 
-print(time_UTC())
 
 def day_UTC():
-	response = requests.get(url, headers={'User-Agent':user_agent})
-	soup = BeautifulSoup(response.text, 'lxml')
-	quotes = soup.find_all('div', id="dd")
-	
-
-	for quote in quotes:
-		day = quote.text	
-	return day
-
+	current_date = str(datetime.now().date())
+	if datetime.now().weekday() == 0:
+		day = 'понедельник'
+	elif datetime.now().weekday() == 1:
+		day = 'вторник'
+	elif datetime.now().weekday() == 2:
+		day = 'среда'
+	elif datetime.now().weekday() == 3:
+		day = 'четверг'
+	elif datetime.now().weekday() == 4:
+		day = 'пятница'
+	elif datetime.now().weekday() == 5:
+		day = 'суббота'
+	elif datetime.now().weekday() == 6:
+		day = 'воскресенье'
+	current_day = day + ',' + current_date
+	return current_day
+print(time_UTC())
 print(day_UTC())
